@@ -37,3 +37,5 @@ app.post("/users", (req, res) => {
 app.listen(port, () => {
 	console.log(`App starting on localhost:${port}`);
 });
+
+module.exports = {app};
