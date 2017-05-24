@@ -37,12 +37,64 @@ UserSchema.methods.generateAuthToken = function() {
 		access
 	}, "abc123").toString();
 
-	let tokens = {access, token};
+	let tokens = {
+		access,
+		token
+	};
 
 	user.tokens.push(tokens);
 
 	return user.save().then(() => { // returned so it can be chained with a promise in server.js
 		return token;
+	});
+}
+
+UserSchema.methods.removeToken = function(token) {
+	let user = this;
+
+	return user.update({
+		$pull: {
+			tokens: {
+				token: token
+			}
+		}
+	})
+}
+
+UserSchema.statics.findUserAndVerifyLogin = function(email, password) {
+	let User = this;
+
+	return User.findOne({
+		email
+	}).then((user) => {
+		if (!user) {
+			return Promise.reject();
+		}
+
+		return bcrypt.compare(password, user.password).then((res) => {
+			if (res) {
+				return user;
+			} else {
+				return Promise.reject();
+			}
+		})
+	});
+}
+
+UserSchema.statics.findByToken = function(token) {
+	let User = this;
+	let decoded;
+
+	try {
+		decoded = jwt.verify(token, "abc123")
+	} catch (e) {
+		return Promise.reject();
+	}
+
+	return User.findOne({
+		_id: decoded._id,
+		"tokens.access": "auth",
+		"tokens.token": token
 	});
 }
 

@@ -6,6 +6,7 @@ let mongoose = require("./db/mongoose.js");
 let {
 	User
 } = require("./models/user.js");
+let {authenticate} = require("./middleware/authenticate.js");
 
 let app = express();
 
@@ -32,10 +33,32 @@ app.post("/users", (req, res) => {
 	}).catch((err) => res.status(400).send(err))
 });
 
+// Login
+app.post("/users/login", (req, res) => {
+	let body = _.pick(req.body, ["email", "password"]);
+
+	User.findUserAndVerifyLogin(body.email, body.password).then((user) => {
+		return user.generateAuthToken().then((token) => {
+			res.header("x-auth", token).send();
+		})
+	}).catch((err) => res.status(400).send(err))
+});
+
+// Logoff
+app.delete("/users/logoff", authenticate, (req, res) => {
+	req.user.removeToken(req.token).then(() => {
+		res.send();
+	}, () => {
+		res.status(400).send();
+	})
+});
+
 
 
 app.listen(port, () => {
 	console.log(`App starting on localhost:${port}`);
 });
 
-module.exports = {app};
+module.exports = {
+	app
+};
