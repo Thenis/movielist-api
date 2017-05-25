@@ -1,6 +1,7 @@
 const express = require("express");
 const _ = require("lodash");
 const bodyParser = require("body-parser");
+const {ObjectId} = require("mongodb");
 
 let mongoose = require("./db/mongoose.js");
 let {
@@ -81,12 +82,18 @@ app.get("/lists", authenticate, (req, res) => {
 	}).catch((err) => res.status(401).send())
 });
 
-// Add new movie to list with list id
 app.patch("/lists/:id/addmovie", authenticate, (req, res) => {
 	let id = req.params.id;
 	let body = _.pick(req.body, ["movieId"]);
 
-	List.update(id, {
+	if (!ObjectId.isValid(id)) {
+		res.status(404).send();
+	}
+	
+	List.findOneAndUpdate({
+		_id: id,
+		_creator: req.user._id
+	}, {
 		$push: {
 			movies: body
 		}
@@ -102,6 +109,11 @@ app.delete("/lists/:id/deletemovie", authenticate, (req, res) => {
 	let id = req.params.id;
 	let body = _.pick(req.body, ["movieId"]);
 
+	if (!ObjectId.isValid(id) || !ObjectId.isValid(body.movieId)) {
+		res.status(404).send();
+	}
+	
+
 	List.update(id, {
 		$pull: {
 			movies: {
@@ -110,9 +122,7 @@ app.delete("/lists/:id/deletemovie", authenticate, (req, res) => {
 		}
 	}).then((list) => {
 		res.send(list)
-	}).catch((err) => res.status(404).send({
-		error: "ID does not exist."
-	}));
+	}).catch((err) => res.send(404).send());
 });
 
 
