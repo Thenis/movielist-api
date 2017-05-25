@@ -6,7 +6,12 @@ let mongoose = require("./db/mongoose.js");
 let {
 	User
 } = require("./models/user.js");
-let {authenticate} = require("./middleware/authenticate.js");
+let {
+	List
+} = require("./models/list.js");
+let {
+	authenticate
+} = require("./middleware/authenticate.js"); //authentication by user token middleware
 
 let app = express();
 
@@ -18,11 +23,11 @@ app.use(bodyParser.json());
 
 //Registration
 app.post("/users", (req, res) => {
-	let body = _.pick(req.body, ["email", "password"]); // get only the email and password from the request body
+	let body = _.pick(req.body, ["username", "password"]); // get only the username and password from the request body
 
 	// create new user
 	let user = new User({
-		email: body.email,
+		username: body.username,
 		password: body.password
 	});
 
@@ -35,9 +40,9 @@ app.post("/users", (req, res) => {
 
 // Login
 app.post("/users/login", (req, res) => {
-	let body = _.pick(req.body, ["email", "password"]);
+	let body = _.pick(req.body, ["username", "password"]);
 
-	User.findUserAndVerifyLogin(body.email, body.password).then((user) => {
+	User.findUserAndVerifyLogin(body.username, body.password).then((user) => {
 		return user.generateAuthToken().then((token) => {
 			res.header("x-auth", token).send();
 		})
@@ -51,6 +56,48 @@ app.delete("/users/logoff", authenticate, (req, res) => {
 	}, () => {
 		res.status(400).send();
 	})
+});
+
+// Create new list
+app.post("/lists", authenticate, (req, res) => {
+	let body = _.pick(req.body, ["name"]);
+
+	let list = new List({
+		name: body.name,
+		_creator: req.user._id
+	})
+
+	list.save().then(() => {
+		res.send(list);
+	}).catch((err) => res.status(400).send(err))
+});
+
+// Get all lists created by specific user
+app.get("/lists", authenticate, (req, res) => {
+	List.find({
+		_creator: req.user._id
+	}).then((lists) => {
+		res.send(lists);
+	}).catch((err) => res.status(401).send())
+});
+
+// Add new movie to list with list id
+app.post("/lists/:id/addmovie", authenticate, (req, res) => {
+	let id = req.params.id;
+	let body = _.pick(req.body, ["movieId"]);
+
+	if (_.isString(body.movieId)) {
+		res.status(400).send();
+	}
+
+	List.findById(id).then((list) => {
+		list.movies.push(body);
+
+		list.save().then(() => {
+			res.send(list)
+		});
+
+	}).catch((err) => res.status(404).send({error: "ID does not exist."}));
 });
 
 

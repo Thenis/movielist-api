@@ -5,7 +5,7 @@ const jwt = require("jsonwebtoken");
 
 // User schema
 let UserSchema = new mongoose.Schema({
-	email: {
+	username: {
 		required: true,
 		type: String,
 		minlength: 1,
@@ -61,11 +61,11 @@ UserSchema.methods.removeToken = function(token) {
 	})
 }
 
-UserSchema.statics.findUserAndVerifyLogin = function(email, password) {
+UserSchema.statics.findUserAndVerifyLogin = function(username, password) {
 	let User = this;
 
 	return User.findOne({
-		email
+		username
 	}).then((user) => {
 		if (!user) {
 			return Promise.reject();
