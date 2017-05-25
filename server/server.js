@@ -82,24 +82,38 @@ app.get("/lists", authenticate, (req, res) => {
 });
 
 // Add new movie to list with list id
-app.post("/lists/:id/addmovie", authenticate, (req, res) => {
+app.patch("/lists/:id/addmovie", authenticate, (req, res) => {
 	let id = req.params.id;
 	let body = _.pick(req.body, ["movieId"]);
 
-	if (_.isString(body.movieId)) {
-		res.status(400).send();
-	}
+	List.update(id, {
+		$push: {
+			movies: body
+		}
+	}).then((list) => {
+		res.send(list);
 
-	List.findById(id).then((list) => {
-		list.movies.push(body);
-
-		list.save().then(() => {
-			res.send(list)
-		});
-
-	}).catch((err) => res.status(404).send({error: "ID does not exist."}));
+	}).catch((err) => res.status(404).send({
+		error: "ID does not exist."
+	}));
 });
 
+app.delete("/lists/:id/deletemovie", authenticate, (req, res) => {
+	let id = req.params.id;
+	let body = _.pick(req.body, ["movieId"]);
+
+	List.update(id, {
+		$pull: {
+			movies: {
+				_id: body.movieId
+			}
+		}
+	}).then((list) => {
+		res.send(list)
+	}).catch((err) => res.status(404).send({
+		error: "ID does not exist."
+	}));
+});
 
 
 app.listen(port, () => {
