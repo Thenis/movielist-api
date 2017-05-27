@@ -83,6 +83,25 @@ app.get("/lists", authenticate, (req, res) => {
 	}).catch((err) => res.status(401).send())
 });
 
+// Delete list by id
+app.delete("/lists/remove/:id", authenticate, (req, res) => {
+	let id = req.params.id;
+
+	if (!ObjectId.isValid(id)) {
+		res.status(404).send();
+	}
+
+	List.findOneAndRemove({
+		_id: id,
+		_creator: req.user._id
+	}).then((list) => {
+		if (!list) {
+			res.status(404).send();
+		}
+		res.send(list);
+	}).catch((err) => res.status(400).send());
+});
+
 app.patch("/lists/:id/addmovie", authenticate, (req, res) => {
 	let id = req.params.id;
 	let body = _.pick(req.body, ["movieId"]);
