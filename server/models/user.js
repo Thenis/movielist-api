@@ -6,10 +6,10 @@ const jwt = require("jsonwebtoken");
 // User schema
 let UserSchema = new mongoose.Schema({
 	username: {
+		unique: true,
 		required: true,
 		type: String,
-		minlength: 1,
-		unique: true,
+		minlength: 1
 	},
 	password: {
 		required: true,
@@ -29,7 +29,9 @@ let UserSchema = new mongoose.Schema({
 	}]
 });
 
-UserSchema.methods.generateAuthToken = function() {
+
+
+UserSchema.methods.generateAuthToken = function () {
 	let user = this;
 	let access = "auth"
 	let token = jwt.sign({
@@ -49,7 +51,7 @@ UserSchema.methods.generateAuthToken = function() {
 	});
 }
 
-UserSchema.methods.removeToken = function(token) {
+UserSchema.methods.removeToken = function (token) {
 	let user = this;
 
 	return user.update({
@@ -61,7 +63,7 @@ UserSchema.methods.removeToken = function(token) {
 	})
 }
 
-UserSchema.statics.findUserAndVerifyLogin = function(username, password) {
+UserSchema.statics.findUserAndVerifyLogin = function (username, password) {
 	let User = this;
 
 	return User.findOne({
@@ -81,7 +83,7 @@ UserSchema.statics.findUserAndVerifyLogin = function(username, password) {
 	});
 }
 
-UserSchema.statics.findByToken = function(token) {
+UserSchema.statics.findByToken = function (token) {
 	let User = this;
 	let decoded;
 
@@ -99,7 +101,7 @@ UserSchema.statics.findByToken = function(token) {
 }
 
 //middleware to run before the save function of an user
-UserSchema.pre("save", function(next) {
+UserSchema.pre("save", function (next) {
 	let user = this;
 	if (user.isModified("password")) {
 		bcrypt.genSalt(10, (err, salt) => {
@@ -117,7 +119,12 @@ UserSchema.pre("save", function(next) {
 // Creating user model by giving the schema and the name of the model
 let User = mongoose.model("User", UserSchema);
 
-
+// Wait for all indexes on the 'users' collection to finish building
+User.on('index', function (error) {
+	if (error) {
+		console.log(error)
+	}
+});
 
 module.exports = {
 	User

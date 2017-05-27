@@ -1,31 +1,32 @@
 const express = require("express");
 const _ = require("lodash");
 const bodyParser = require("body-parser");
-const {ObjectId} = require("mongodb");
+const cors = require('cors')
+const { ObjectId } = require("mongodb");
 
 let mongoose = require("./db/mongoose.js");
-let {
-	User
-} = require("./models/user.js");
-let {
-	List
-} = require("./models/list.js");
-let {
-	authenticate
-} = require("./middleware/authenticate.js"); //authentication by user token middleware
+let { User } = require("./models/user.js");
+let { List } = require("./models/list.js");
+let { authenticate } = require("./middleware/authenticate.js"); //authentication by user token middleware
 
 let app = express();
 
 const port = 3000;
 
+app.use(bodyParser.urlencoded({
+	extended: true
+}));
 //Parse incoming requsts to json middleware. Populates the req.body with params
 app.use(bodyParser.json());
+
+//Allows cross-origin resource sharing
+app.use(cors());
 
 
 //Registration
 app.post("/users", (req, res) => {
 	let body = _.pick(req.body, ["username", "password"]); // get only the username and password from the request body
-
+	//console.log(req)
 	// create new user
 	let user = new User({
 		username: body.username,
@@ -86,23 +87,23 @@ app.patch("/lists/:id/addmovie", authenticate, (req, res) => {
 	let id = req.params.id;
 	let body = _.pick(req.body, ["movieId"]);
 
-	if (!ObjectId.isValid(id)) {
+	if (!ObjectId.isValid(id) || !ObjectId.isValid(body.movieId)) {
 		res.status(404).send();
 	}
-	
+
 	List.findOneAndUpdate({
 		_id: id,
 		_creator: req.user._id
 	}, {
-		$push: {
-			movies: body
-		}
-	}).then((list) => {
-		res.send(list);
+			$push: {
+				movies: body
+			}
+		}).then((list) => {
+			res.send(list);
 
-	}).catch((err) => res.status(404).send({
-		error: "ID does not exist."
-	}));
+		}).catch((err) => res.status(404).send({
+			error: "ID does not exist."
+		}));
 });
 
 app.delete("/lists/:id/deletemovie", authenticate, (req, res) => {
@@ -112,17 +113,20 @@ app.delete("/lists/:id/deletemovie", authenticate, (req, res) => {
 	if (!ObjectId.isValid(id) || !ObjectId.isValid(body.movieId)) {
 		res.status(404).send();
 	}
-	
 
-	List.update(id, {
-		$pull: {
-			movies: {
-				_id: body.movieId
+
+	List.update({
+		_id: id,
+		_creator: req.user._id
+	}, {
+			$pull: {
+				movies: {
+					_id: body.movieId
+				}
 			}
-		}
-	}).then((list) => {
-		res.send(list)
-	}).catch((err) => res.send(404).send());
+		}).then((list) => {
+			res.send(list)
+		}).catch((err) => res.send(404).send());
 });
 
 
