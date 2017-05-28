@@ -6,6 +6,10 @@ let ListSchema = new mongoose.Schema({
 		required: true,
 		minlength: 1
 	},
+	description: {
+		type: String,
+		required: false
+	},
 	_creator: {
 		type: mongoose.Schema.Types.ObjectId,
 		required: true

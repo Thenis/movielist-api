@@ -1,0 +1,20 @@
+{{> header }}
+
+<section id="register-page">
+    <div class="container">
+        <h2 class="page-header">Register</h2>
+        <form id="register-form" onsubmit="event.preventDefault(); ajaxRegister();">
+            <div class="form-group">
+                <label class="username-label" for="register-username-input">Username</label>
+                <input class="form-control" type="text" id="register-username-input" required/>
+            </div>
+            <div class="form-group">
+                <label class="password-label" for="register-password-input">Password</label>
+                <input class="form-control" type="password" id="register-password-input" required/>
+            </div>
+            <input type="submit" class="btn btn-sm btn-primary" value="Register" />
+        </form>
+    </div>
+</section>
+
+{{> footer }}

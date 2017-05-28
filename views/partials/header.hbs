@@ -1,0 +1,50 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Movie List</title>
+    <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+    <script language="javascript" src="js/bootstrap.min.js"></script>
+    <script language="javascript" src="js/main.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<section id="success-alert" class="alert alert-success" role="alert">Success</section>
+<section id="error-alert" class="alert alert-danger" role="alert">Error</section>
+
+<nav class="my-navbar navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+                aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            <a class="navbar-brand" href="#">Movie List</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="nav-links collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav row vdivide">
+                <li><a id="home" href="/">Home</a></li>
+                <li><a id="lists" href="/view-lists">Lists</a></li>
+                <li><a id="register" href="/register">Register</a></li>
+                <li><a id="add-list" href="/add-list">Add list</a></li>
+                <li><a id="add-movie" href="/add-movie">Add a movie</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a id="user-nav" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Thenis <span class="caret"></span></a>
+                    <ul id="user-dropdown" class="dropdown-menu">
+                        <li><a id="log-out" href="#">Log out</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container-fluid -->
+</nav>

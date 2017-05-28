@@ -1,0 +1,25 @@
+{{> header }}
+
+<section id="add-movie-form">
+    <div class="container">
+        <h3 class="page-header">Add a movie to a list</h3>
+        <form id="movie-form" onsubmit="event.preventDefault(); addMovie();">
+            <div class="form-group">
+                <label class="list-movie-label" for="list-select">Select a list:</label>
+                <select id="list-select" class="form-control">
+                        <option value="no-lists">No lists available</option>
+                        <!-- options get appended here -->
+                    </select>
+            </div>
+            <div class="form-group">
+                <label class="list-movie-label" for="movie-input">Movie name</label>
+                <input class="form-control" type="text" id="movie-input" required/>
+            </div>
+            <ul id="movie-query-list" class="list-group">
+            </ul>
+            <input type="submit" class="btn btn-sm btn-primary" value="Add Movie" />
+        </form>
+    </div>
+</section>
+
+{{> footer }}

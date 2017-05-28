@@ -1,0 +1,259 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:600');
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 80px;
+    background-color: #222222;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.page-header {
+    color: #FFEB3B;
+    border-bottom: 1px solid #FFEB3B;
+}
+
+/* NAVIGATION */
+.my-navbar {
+    background: #FFEB3B;
+    border-color: transparent;
+    padding: 10px;
+    margin: 0;
+    border-radius: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.my-navbar .navbar-brand{
+    color: #222222;
+    font-size: 27px;
+    text-transform: uppercase;
+}
+
+.my-navbar .navbar-brand:hover{
+    color: #e74c3c;
+}
+
+.my-navbar .nav-links li a{
+    color: #222222;
+    font-size: 20px;
+    margin-left: 15px;
+    text-transform: uppercase;
+}
+
+.my-navbar .nav-links li a:hover{
+    color: #e74c3c;
+}
+
+.navbar-default .navbar-toggle .icon-bar{
+    background-color: white;
+}
+
+.navbar-default .navbar-collapse, .navbar-default .navbar-form{
+    border-color: #000000;
+}
+
+.navbar-default .navbar-toggle{
+    border-color: #000000;
+}
+
+.navbar-default .navbar-toggle .icon-bar{
+    background-color: #000000;
+}
+.navbar-default .navbar-toggle:focus .icon-bar{
+    background-color: #ffffff;
+}
+.navbar-default .navbar-toggle:hover .icon-bar{
+    background-color: #ffffff;
+}
+
+
+.navbar-default .navbar-toggle:focus, .navbar-default .navbar-toggle:hover{
+    background-color: #000000;
+
+}
+
+a#user-nav:focus {
+    background-color: #222222;
+    color: #FFEB3B;
+}
+
+ul#user-dropdown  {
+    background-color: #FFEB3B;
+    border: 1px solid #222222;
+    border-radius: 0;
+}
+
+ul#user-dropdown>li>a:hover {
+    background-color: inherit;
+}
+
+/* CAROUSEL */
+.carousel-caption {
+    top: 30%;
+    bottom: auto;
+}
+
+.carousel-caption > h1{
+    font-size: 50px;
+    color: #FFEB3B;
+    text-transform: uppercase;
+}
+
+.carousel-caption > a {
+    margin-top: 3%;
+    font-size: 20px;
+}
+
+/* Register/Login forms */
+
+#register-page>div.container {
+    width: 600px;
+}
+
+
+/*  BUTTON STYLING */
+
+.btn-primary{
+    background-color: #FFEB3B;
+    color: #222222;
+    border-radius: 0;
+    border-color: #FFEB3B;
+}
+
+.btn-primary:hover{
+    background-color: #222222;
+    color: #FFEB3B;
+    border-color: #FFEB3B;
+}
+.btn-primary:focus{
+    background-color: #222222;
+    color: #FFEB3B;
+    border-color: #FFEB3B;
+}
+
+.btn-primary:active{
+    background-color: #222222;
+    color: #FFEB3B;
+    border-color: #FFEB3B;
+}
+
+.btn-danger {
+    background-color: #e74c3c;
+    border-radius: 0;
+    border: none;
+    font-weight: 100;
+}
+
+
+/* FOOTER */
+.footer {
+    text-transform: uppercase;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding-top: 30px;
+    color: #000000;
+    /*fixed height of the footer*/
+    height: 80px;
+    background-color: #FFEB3B;
+
+}
+
+/* Card styling(list containers) */
+#list-container .card {
+    background-color: #FFEB3B;
+    border: 2px solid #FFEB3B;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5%;
+    padding: 50px;
+}
+
+#list-container .card a {
+    color: #222222;
+    text-decoration: none;
+}
+
+#list-container .card:hover{
+    background-color: #222222;
+}
+
+#list-container .card:hover h3 a{
+    color: #FFEB3B;
+}
+
+/* Table styling */
+table {
+    background-color: #FFEB3B;
+    border: 1px solid #222222;
+}
+
+.table>tbody>tr>td{
+    border-color: #222222;
+}
+
+.table>thead>tr>th{
+    border-bottom: 2px solid #222222;
+}
+
+.table-responsive{
+    border: none;
+}
+
+/* Label styling */
+label {
+    color: #FFEB3B;
+}
+
+/*Headings*/
+.no-content{
+    color: #FFEB3B;
+}
+
+/*Alerts*/
+
+.alert-success{
+    background-color: #1abc9c;
+    color: white;
+    border: none;
+    border-radius: 0;
+    text-align: center;
+    font-size: 17px;
+    position: absolute;
+    width: 100%
+}
+
+.alert-danger{
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 0;
+    text-align: center;
+    font-size: 17px;
+    position: absolute;
+    width: 100%;
+}
+
+#movie-query-list {
+    max-height: 200px; 
+    overflow-y: scroll;
+}
+
+#movie-query-list li{   
+    background-color: #FFFFFF;
+}
+
+#movie-query-list li:hover{
+    background-color: #ecf0f1;
+}
+
+#movie-query-list li a{
+    text-decoration: none;
+    color: #222222;
+}
+

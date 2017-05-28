@@ -1,0 +1,20 @@
+{{> header }}
+
+<section id="add-list-form">
+    <div class="container">
+        <h3 class="page-header">Add a new list</h3>
+        <form id="list-form" onsubmit="event.preventDefault(); addList();">
+            <div class="form-group">
+                <label class="list-movie-label" for="list-input">List name</label>
+                <input type="text" class="form-control" id="list-input" required>
+            </div>
+            <div class="form-group">
+                <label class="list-movie-label" for="list-descr">Description</label>
+                <textarea class="form-control" id="list-descr" placeholder="Optional"></textarea>
+            </div>
+            <input type="submit" class="btn btn-sm btn-primary" value="Add List" />
+        </form>
+    </div>
+</section>
+
+{{> footer }}
