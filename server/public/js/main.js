@@ -28,11 +28,10 @@ $(function () {
     //     loadListNamesInSelect();
     // });
 
-    // $("#movie-input").on("input", function () {
-    //     let movieName = $(this).val();
-    //     ajaxGet(movieName);
-    // })
-
+    $("#movie-input").on("input", function () {
+        let movieName = $(this).val();
+        ajaxGetMovies(movieName);
+    })
     $("#log-out").click(ajaxLogoutUser);
 });
 
@@ -110,11 +109,39 @@ function ajaxRegister() {
     }).catch((err) => showMsg("Error", "error"));
 }
 
+function ajaxLogin() {
+    let userData = {
+        username: $("#login-username-input").val(),
+        password: $("#login-password-input").val()
+    };
+
+    $.ajax({
+        method: "POST",
+        url: '/users/login',
+        data: userData,
+    }).then((res, status, xhr) => {
+        let xAuth = xhr.getResponseHeader("x-auth");
+
+        setCookie("x-auth", xAuth);
+        showMsg("Successfully logged in!", "success");
+    }).catch((err) => showMsg("Error", "error"));
+}
+
 function ajaxLogoutUser() {
+    $.ajax({
+        method: "DELETE",
+        headers: {
+            "x-auth": getCookie("x-auth")
+        },
+        url: '/users/logoff'
+    }).then((res, status, xhr) => {
+        showMsg("Successfully logged off!", "success");
+    }).catch((err) => showMsg("Error", "error"));
+
     deleteCookie("x-auth");
 }
 
-function ajaxGet(queryString) {
+function ajaxGetMovies(queryString) {
     const apiKey = "87cdafe12d9bdca68ba01c573e34376f";
 
     let result = $.ajax({

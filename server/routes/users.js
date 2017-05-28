@@ -10,7 +10,7 @@ let { authenticate } = require("./../middleware/authenticate.js"); //authenticat
 //Parse incoming requsts to json middleware. Populates the req.body with params
 
 
-router.post("/users", (req, res) => {
+router.post("/", (req, res) => {
     let body = _.pick(req.body, ["username", "password"]); // get only the username and password from the request body
     //console.log(req)
     // create new user
@@ -27,9 +27,9 @@ router.post("/users", (req, res) => {
 });
 
 // Login
-router.post("users/login", (req, res) => {
+router.post("/login", (req, res) => {
     let body = _.pick(req.body, ["username", "password"]);
-
+    //console.log(req);
     User.findUserAndVerifyLogin(body.username, body.password).then((user) => {
         return user.generateAuthToken().then((token) => {
             res.header("x-auth", token).send();
@@ -38,9 +38,10 @@ router.post("users/login", (req, res) => {
 });
 
 // Logoff
-router.delete("users/logoff", authenticate, (req, res) => {
+router.delete("/logoff", authenticate, (req, res) => {
     req.user.removeToken(req.token).then(() => {
         res.send();
+        console.log("logged off");
     }, () => {
         res.status(400).send();
     })

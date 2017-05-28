@@ -15,14 +15,14 @@ const port = 3000;
 
 //Parse incoming requsts to json middleware. Populates the req.body with params
 app.use(bodyParser.urlencoded({
-	extended: true
+	extended: false
 }));
 //Parse incoming requsts to json middleware. Populates the req.body with params
 app.use(bodyParser.json());
 
 const corsOptions = {
 	origin: "*",
-	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+	methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
 	preflightContinue: false,
 	optionsSuccessStatus: 204,
 	exposedHeaders: ["x-auth"]
@@ -41,7 +41,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.use(viewRoutes);
 
-app.use(users);
+app.use("/users/", users);
 
 app.use(lists);
 

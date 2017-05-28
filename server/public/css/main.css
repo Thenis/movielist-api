@@ -108,7 +108,7 @@ ul#user-dropdown>li>a:hover {
 
 /* Register/Login forms */
 
-#register-page>div.container {
+#register-page>div.container, #login-page>div.container {
     width: 600px;
 }
 

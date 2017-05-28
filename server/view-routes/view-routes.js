@@ -9,6 +9,10 @@ router.get("/register", (req, res) => {
 	res.render("register.hbs");
 });
 
+router.get("/login", (req, res) => {
+	res.render("login.hbs");
+});
+
 router.get("/view-lists", (req, res) => {
 	res.render("view-lists.hbs");
 });
