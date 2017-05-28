@@ -19,8 +19,16 @@ app.use(bodyParser.urlencoded({
 //Parse incoming requsts to json middleware. Populates the req.body with params
 app.use(bodyParser.json());
 
+const corsOptions = {
+	origin: "*",
+	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+	preflightContinue: false,
+	optionsSuccessStatus: 204,
+	exposedHeaders: ["x-auth"]
+}
+
 //Allows cross-origin resource sharing
-app.use(cors());
+app.use(cors(corsOptions));
 
 
 //Registration
