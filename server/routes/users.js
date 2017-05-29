@@ -2,15 +2,12 @@ const express = require("express");
 const router = express.Router();
 const { ObjectId } = require("mongodb");
 const _ = require("lodash");
-const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 let { User } = require("./../models/user.js");
 let { authenticate } = require("./../middleware/authenticate.js"); //authentication by user token middleware
 
-//Parse incoming requsts to json middleware. Populates the req.body with params
-
-
-router.post("/", (req, res) => {
+router.post("/users", (req, res) => {
     let body = _.pick(req.body, ["username", "password"]); // get only the username and password from the request body
     //console.log(req)
     // create new user
@@ -22,7 +19,7 @@ router.post("/", (req, res) => {
     user.save().then(() => {
         return user.generateAuthToken();
     }).then((token) => {
-        res.header("x-auth", token).send(user)
+        res.cookie("x-auth", token).cookie("username", body.username).redirect(301, "/");
     }).catch((err) => res.status(400).send(err))
 });
 
@@ -32,7 +29,7 @@ router.post("/login", (req, res) => {
     //console.log(req);
     User.findUserAndVerifyLogin(body.username, body.password).then((user) => {
         return user.generateAuthToken().then((token) => {
-            res.header("x-auth", token).send();
+            res.cookie("x-auth", token).redirect(301, "/");
         })
     }).catch((err) => res.status(400).send(err))
 });

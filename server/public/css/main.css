@@ -225,7 +225,8 @@ label {
     text-align: center;
     font-size: 17px;
     position: absolute;
-    width: 100%
+    width: 100%;
+    display: none;
 }
 
 .alert-danger{
@@ -237,6 +238,7 @@ label {
     font-size: 17px;
     position: absolute;
     width: 100%;
+    display: none;
 }
 
 #movie-query-list {

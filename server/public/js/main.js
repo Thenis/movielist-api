@@ -1,9 +1,9 @@
 $(function () {
 
 
-    // $("#start-now-btn").click(function () {
-    //     showView("add-list-form");
-    // });
+    $("#start-now-btn").click(function () {
+        showMsg("success", "success");
+    });
 
     // $("#home").click(function () {
     //     showView("home-page");
@@ -27,6 +27,10 @@ $(function () {
     //     showView("add-movie-form");
     //     loadListNamesInSelect();
     // });
+
+
+
+    
 
     $("#movie-input").on("input", function () {
         let movieName = $(this).val();
@@ -91,54 +95,19 @@ function deleteCookie(cookieName) {
     document.cookie = cookieName += `=; expires=${cookieDate.toUTCString()}`;
 }
 
-function ajaxRegister() {
-    let userData = {
-        username: $("#register-username-input").val(),
-        password: $("#register-password-input").val()
-    };
-
-    $.ajax({
-        method: "POST",
-        url: '/users',
-        data: userData,
-    }).then((res, status, xhr) => {
-        let xAuth = xhr.getResponseHeader("x-auth");
-
-        setCookie("x-auth", xAuth);
-        showMsg("Successfully registered!", "success");
-    }).catch((err) => showMsg("Error", "error"));
-}
-
-function ajaxLogin() {
-    let userData = {
-        username: $("#login-username-input").val(),
-        password: $("#login-password-input").val()
-    };
-
-    $.ajax({
-        method: "POST",
-        url: '/users/login',
-        data: userData,
-    }).then((res, status, xhr) => {
-        let xAuth = xhr.getResponseHeader("x-auth");
-
-        setCookie("x-auth", xAuth);
-        showMsg("Successfully logged in!", "success");
-    }).catch((err) => showMsg("Error", "error"));
-}
-
 function ajaxLogoutUser() {
     $.ajax({
         method: "DELETE",
         headers: {
             "x-auth": getCookie("x-auth")
         },
-        url: '/users/logoff'
+        url: '/logoff'
     }).then((res, status, xhr) => {
         showMsg("Successfully logged off!", "success");
     }).catch((err) => showMsg("Error", "error"));
 
     deleteCookie("x-auth");
+    deleteCookie("username");
 }
 
 function ajaxGetMovies(queryString) {
@@ -168,12 +137,20 @@ function ajaxGetMovies(queryString) {
     });
 }
 
-function showView(view) {
-    let sections = $("section");
+function showHideNavLinks() {
+    $("#navbar a").hide();
+    $("#user-nav").hide();
 
-    sections.hide();
 
-    $("#" + view).show();
+
+    if(getCookie("x-auth")) {
+        $("#user-nav").text(getCookie("username"))
+            .append($("<span></span>")
+            .addClass("caret"))
+            .show();
+    } else {
+        showHideNavLinks();
+    }
 }
 
 function showMsg(msg, type) {

@@ -6,6 +6,18 @@ const _ = require("lodash");
 let { List } = require("./../models/list.js");
 let { authenticate } = require("./../middleware/authenticate.js"); //authentication by user token middleware
 
+router.get("/view-lists", (req, res) => {
+	res.render("view-lists.hbs");
+});
+
+router.get("/add-list", (req, res) => {
+	res.render("add-list.hbs");
+});
+
+router.get("/add-movie", (req, res) => {
+	res.render("add-movie.hbs");
+});
+
 // Create new list
 router.post("/lists", authenticate, (req, res) => {
 	let body = _.pick(req.body, ["name", "description"]);
@@ -26,7 +38,7 @@ router.get("/lists", authenticate, (req, res) => {
 	List.find({
 		_creator: req.user._id
 	}).then((lists) => {
-		res.send(lists);
+		res.render("view-lists.hbs", { lists });
 	}).catch((err) => res.status(401).send())
 });
 

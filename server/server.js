@@ -7,8 +7,8 @@ const hbs = require("hbs");
 
 let mongoose = require("./db/mongoose.js");
 let users = require("./routes/users.js")
+let index = require("./routes/index.js")
 let lists = require("./routes/lists.js");
-let viewRoutes = require("./view-routes/view-routes.js");
 let app = express();
 
 const port = 3000;
@@ -29,7 +29,6 @@ const corsOptions = {
 }
 
 //console.log(__dirname + "/../views");
-
 //Allows cross-origin resource sharing
 app.use(cors(corsOptions));
 
@@ -39,9 +38,9 @@ hbs.registerPartials(__dirname + "./../views/partials");
 
 app.use(express.static(__dirname + "/public"));
 
-app.use(viewRoutes);
 
-app.use("/users/", users);
+app.use(users);
+app.use(index);
 
 app.use(lists);
 
