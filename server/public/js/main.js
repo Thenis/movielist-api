@@ -1,5 +1,5 @@
 $(function () {
-
+    showHideUserLink();
 
     $("#start-now-btn").click(function () {
         showMsg("success", "success");
@@ -28,7 +28,7 @@ $(function () {
     //     loadListNamesInSelect();
     // });
 
-
+    
 
     
 
@@ -108,6 +108,7 @@ function ajaxLogoutUser() {
 
     deleteCookie("x-auth");
     deleteCookie("username");
+    showHideUserLink();
 }
 
 function ajaxGetMovies(queryString) {
@@ -137,19 +138,12 @@ function ajaxGetMovies(queryString) {
     });
 }
 
-function showHideNavLinks() {
-    $("#navbar a").hide();
-    $("#user-nav").hide();
-
-
-
+function showHideUserLink() {
     if(getCookie("x-auth")) {
         $("#user-nav").text(getCookie("username"))
-            .append($("<span></span>")
-            .addClass("caret"))
-            .show();
+            .append($("<span></span>").addClass("caret"));
     } else {
-        showHideNavLinks();
+        $("#user-nav").hide();
     }
 }
 

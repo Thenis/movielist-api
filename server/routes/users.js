@@ -29,7 +29,7 @@ router.post("/login", (req, res) => {
     //console.log(req);
     User.findUserAndVerifyLogin(body.username, body.password).then((user) => {
         return user.generateAuthToken().then((token) => {
-            res.cookie("x-auth", token).redirect(301, "/");
+            res.cookie("x-auth", token).cookie("username", body.username).redirect(301, "/");
         })
     }).catch((err) => res.status(400).send(err))
 });
@@ -44,4 +44,4 @@ router.delete("/logoff", authenticate, (req, res) => {
     })
 });
 
-module.exports =  router;
+module.exports = router;
