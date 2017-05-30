@@ -28,7 +28,7 @@ const corsOptions = {
 	exposedHeaders: ["x-auth"]
 }
 
-//console.log(__dirname + "/../views");
+//console.log(__dirname + "\\..\\views\\");
 //Allows cross-origin resource sharing
 app.use(cors(corsOptions));
 
@@ -36,7 +36,7 @@ app.set("view engine", "hbs");
 
 hbs.registerPartials(__dirname + "./../views/partials");
 
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(__dirname + "./../public"));
 
 
 app.use(users);
