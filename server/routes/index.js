@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const { isAuthenticated } = require("./../config/utils.js");
+
 router.get("/", (req, res) => {
 	res.render("home.hbs");
 });
@@ -14,6 +16,8 @@ router.get("/login", (req, res) => {
 });
 
 router.get("/view-lists", (req, res) => {
+	//console.log(req.cookies["x-auth"]);
+	console.log(isAuthenticated(req.cookies["x-auth"]));
 	res.render("view-lists.hbs");
 });
 

@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { ObjectId } = require("mongodb");
 const _ = require("lodash");
-const cookieParser = require("cookie-parser");
+
 
 let { User } = require("./../models/user.js");
 let { authenticate } = require("./../middleware/authenticate.js"); //authentication by user token middleware
@@ -37,7 +37,7 @@ router.post("/login", (req, res) => {
 // Logoff
 router.delete("/logoff", authenticate, (req, res) => {
     req.user.removeToken(req.token).then(() => {
-        res.send();
+        res.clearCookie("x-auth").status(301).send("/");
         console.log("logged off");
     }, () => {
         res.status(400).send();

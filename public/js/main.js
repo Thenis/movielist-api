@@ -98,16 +98,16 @@ function deleteCookie(cookieName) {
 function ajaxLogoutUser() {
     $.ajax({
         method: "DELETE",
+        url: '/logoff',
         headers: {
             "x-auth": getCookie("x-auth")
-        },
-        url: '/logoff'
-    }).then((res, status, xhr) => {
+        }
+    }).then((res) => {
+        console.log("here");
+        window.location = "/login";
         showMsg("Successfully logged off!", "success");
     }).catch((err) => showMsg("Error", "error"));
-
-    deleteCookie("x-auth");
-    deleteCookie("username");
+    
     showHideUserLink();
 }
 

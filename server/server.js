@@ -4,6 +4,7 @@ const bodyParser = require("body-parser");
 const cors = require('cors')
 const { ObjectId } = require("mongodb");
 const hbs = require("hbs");
+const cookieParser = require("cookie-parser");
 
 let mongoose = require("./db/mongoose.js");
 let users = require("./routes/users.js")
@@ -19,6 +20,8 @@ app.use(bodyParser.urlencoded({
 }));
 //Parse incoming requsts to json middleware. Populates the req.body with params
 app.use(bodyParser.json());
+
+app.use(cookieParser());
 
 const corsOptions = {
 	origin: "*",
