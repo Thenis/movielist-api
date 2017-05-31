@@ -1,12 +1,14 @@
 let { User } = require("./../models/user.js");
 
 let authenticate = (req, res, next) => {
-	let token = req.header("x-auth");
+	let token = req.cookies["x-auth"];
 
 	User.findByToken(token).then((user) => {
 		if (!user) {
 			return Promise.reject();
 		}
+		
+		res.locals.username = user.username;
 
 		req.token = token;
 		req.user = user;

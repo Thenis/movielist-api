@@ -104,11 +104,10 @@ function ajaxLogoutUser() {
         }
     }).then((res) => {
         console.log("here");
-        window.location = "/login";
+        location.reload();
         showMsg("Successfully logged off!", "success");
+        showHideUserLink();
     }).catch((err) => showMsg("Error", "error"));
-    
-    showHideUserLink();
 }
 
 function ajaxGetMovies(queryString) {
@@ -139,10 +138,16 @@ function ajaxGetMovies(queryString) {
 }
 
 function showHideUserLink() {
+    $("#navbar li a").show();
     if(getCookie("x-auth")) {
+        $("#login").hide();
+        $("#register").hide();
         $("#user-nav").text(getCookie("username"))
             .append($("<span></span>").addClass("caret"));
     } else {
+        $("#lists").hide();
+        $("#add-list").hide();
+        $("#add-movie").hide();
         $("#user-nav").hide();
     }
 }
