@@ -49,6 +49,23 @@ router.delete("/lists/remove/:id", authenticate, (req, res) => {
 	}).catch((err) => res.status(400).send());
 });
 
+router.get("/movie-list/:id", authenticate, (req, res) => {
+	let id = req.params.id;
+
+	if (!ObjectId.isValid(id)) {
+		res.status(404).send();
+	}
+
+	List.findOne({
+		_id: id,
+		_creator: req.user._id
+	}).then((list) => {
+		let listName = list.name
+		let movies = list.movies;
+		res.render("view-movies.hbs", { movies, listName });
+	});
+});
+
 router.patch("/lists/:id/addmovie", authenticate, (req, res) => {
 	let id = req.params.id;
 	let body = _.pick(req.body, ["movieName"]);
@@ -74,12 +91,11 @@ router.patch("/lists/:id/addmovie", authenticate, (req, res) => {
 
 router.delete("/lists/:id/deletemovie", authenticate, (req, res) => {
 	let id = req.params.id;
-	let body = _.pick(req.body, ["movieId"]);
+	let body = _.pick(req.body, ["movieName"]);
 
-	if (!ObjectId.isValid(id) || !ObjectId.isValid(body.movieId)) {
+	if (!ObjectId.isValid(id)) {
 		res.status(404).send();
 	}
-
 
 	List.update({
 		_id: id,
@@ -87,7 +103,7 @@ router.delete("/lists/:id/deletemovie", authenticate, (req, res) => {
 	}, {
 			$pull: {
 				movies: {
-					_id: body.movieId
+					_id: body.movieName
 				}
 			}
 		}).then((list) => {

@@ -35,10 +35,10 @@ const corsOptions = {
 
 //Allows cross-origin resource sharing
 app.use(cors(corsOptions));
-
+hbs.registerPartials(__dirname + "./../views/partials");
 app.set("view engine", "hbs");
 
-hbs.registerPartials(__dirname + "./../views/partials");
+
 
 
 

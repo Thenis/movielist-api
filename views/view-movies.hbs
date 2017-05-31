@@ -1,0 +1,29 @@
+{{> header}} 
+
+<section id="movie-page">
+    <div class="container">
+        <h2 class="page-header">Movies in list - {{listName}}</h2>
+        <div class="table-responsive">
+            <table id="table" class="table">
+                <thead>
+                    <tr>
+                        <th>Movie</th>
+                        <th>Options</th>
+                    </tr>
+                </thead>
+                <tbody id="movie-list">
+                    {{#each movies}}
+                    <tr>
+                        <td>{{this.movieName}}</td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-danger">Remove</a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+{{> footer}}
