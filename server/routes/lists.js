@@ -17,7 +17,7 @@ router.post("/lists", authenticate, (req, res) => {
 	})
 
 	list.save().then(() => {
-		res.send(list);
+		res.redirect(301, "/lists");
 	}).catch((err) => res.status(400).send(err))
 });
 

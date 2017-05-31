@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-let { authenticate } = require("./../middleware/authenticate.js"); 
-
+let { authenticate } = require("./../middleware/authenticate.js");
+let { List } = require("./../models/list.js");
 
 router.get("/", (req, res) => {
 	res.render("home.hbs");
@@ -20,7 +20,11 @@ router.get("/add-list", authenticate, (req, res) => {
 });
 
 router.get("/add-movie", authenticate, (req, res) => {
-	res.render("add-movie.hbs");
+	List.find({
+		_creator: req.user._id
+	}).then((lists) => {
+		res.render("add-movie.hbs", { lists });
+	})
 });
 
 module.exports = router;

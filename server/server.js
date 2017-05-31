@@ -32,7 +32,6 @@ const corsOptions = {
 	exposedHeaders: ["x-auth"]
 }
 
-//console.log(__dirname + "\\..\\views\\");
 //Allows cross-origin resource sharing
 app.use(cors(corsOptions));
 
@@ -41,10 +40,6 @@ app.set("view engine", "hbs");
 hbs.registerPartials(__dirname + "./../views/partials");
 
 
-// hbs.registerHelper("authToken", function() {
-// 	let token = req.app.locals.token;
-// 	return token;
-// })
 
 hbs.registerHelper('log', function(a) {
     console.log(a);
@@ -52,14 +47,6 @@ hbs.registerHelper('log', function(a) {
 
 app.use(express.static(__dirname + "./../public"));
 
-app.use(function(req, res, next) {
-	// if (isAuthenticated(req.cookies["x-auth"])) {
-	// 	res.locals.authenticated = true
-	// }
-
-	//console.log(req.cookies["x-auth"])
-	next();
-})
 app.use(users);
 
 app.use(index);

@@ -7,9 +7,15 @@
             <div class="form-group">
                 <label class="list-movie-label" for="list-select">Select a list:</label>
                 <select id="list-select" class="form-control">
+                    <!-- options get appended here -->
+                    {{#if lists}}
+                        {{#each lists}}
+                            <option value="{{this._id}}">{{this.name}}</option>
+                        {{/each}}
+                    {{else}}
                         <option value="no-lists">No lists available</option>
-                        <!-- options get appended here -->
-                    </select>
+                    {{/if}}           
+                </select>
             </div>
             <div class="form-group">
                 <label class="list-movie-label" for="movie-input">Movie name</label>
