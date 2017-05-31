@@ -36,8 +36,8 @@ router.post("/login", (req, res) => {
 
 // Logoff
 router.delete("/logoff", authenticate, (req, res) => {
-    req.user.removeToken(req.token).then(() => {
-        res.clearCookie("x-auth").clearCookie("username").send("success");
+    req.user.removeToken(req.token).then((doc) => {
+        res.clearCookie("x-auth").clearCookie("username").send({doc});
         console.log("logged off");
     }, () => {
         res.status(400).send();

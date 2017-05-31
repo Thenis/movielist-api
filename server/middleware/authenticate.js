@@ -7,8 +7,6 @@ let authenticate = (req, res, next) => {
 		if (!user) {
 			return Promise.reject();
 		}
-		
-		res.locals.username = user.username;
 
 		req.token = token;
 		req.user = user;
