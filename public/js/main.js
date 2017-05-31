@@ -35,6 +35,7 @@ $(function () {
     $("#movie-input").on("input", function () {
         let movieName = $(this).val();
         ajaxGetMovies(movieName);
+
     })
     $("#log-out").click(ajaxLogoutUser);
 });
@@ -102,7 +103,7 @@ function ajaxLogoutUser() {
         headers: {
             "x-auth": getCookie("x-auth")
         }
-    }).then((res) => {
+    }).then(function (res) {
         console.log("here");
         location.reload();
         showMsg("Successfully logged off!", "success");
@@ -110,17 +111,51 @@ function ajaxLogoutUser() {
     }).catch((err) => showMsg("Error", "error"));
 }
 
+// function ajaxGetMovies(queryString) {
+//     const apiKey = "87cdafe12d9bdca68ba01c573e34376f";
+
+//     let result = $.ajax({
+//         method: "GET",
+//         url: `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${queryString}&page=1&include_adult=false`,
+
+//         dataType: "JSON"
+//     }).then(function (movies) {
+//         console.log(movies.results);
+//         $("#movie-query-list").empty();
+
+//         for (let movie of movies.results) {
+//             $("<li>")
+//                 .addClass("list-group-item list-group-item-action")
+//                 .append($("<img>").attr("src", (movie.poster_path === null ? "img/default-movie.png" : `https://image.tmdb.org/t/p/w45_and_h67_bestv2${movie.poster_path}`)))
+//                 .append($("<a>")
+//                     .attr("href", "#")
+//                     .text(movie.original_title)
+//                     .click(function () {
+//                         addMovie($(this).text())
+//                     }))
+//                 .appendTo($("#movie-query-list"));
+//         }
+//     });
+// }
+
 function ajaxGetMovies(queryString) {
-    const apiKey = "87cdafe12d9bdca68ba01c573e34376f";
-
     let result = $.ajax({
-        method: "GET",
-        url: `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${queryString}&page=1&include_adult=false`,
-
+        method: "POST",
+        url: "/get-movie",
+        data: { queryString },
         dataType: "JSON"
     }).then(function (movies) {
-        console.log(movies.results);
+        console.log(movies);
         $("#movie-query-list").empty();
+
+        //if array is empty
+        if(movies.results.length === 0) {
+            $("<li>")
+                .addClass("list-group-item list-group-item-action")
+                .text("No movies found")
+                .appendTo($("#movie-query-list"));
+            return;           
+        }
 
         for (let movie of movies.results) {
             $("<li>")
@@ -134,7 +169,7 @@ function ajaxGetMovies(queryString) {
                     }))
                 .appendTo($("#movie-query-list"));
         }
-    });
+    }).catch((err) => console.log(err));
 }
 
 function showHideUserLink() {

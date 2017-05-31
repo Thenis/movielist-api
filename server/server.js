@@ -9,7 +9,8 @@ const cookieParser = require("cookie-parser");
 let mongoose = require("./db/mongoose.js");
 let users = require("./routes/users.js")
 let index = require("./routes/index.js")
-let lists = require("./routes/lists.js");
+let lists = require("./routes/lists.js")
+let themoviedbAPI = require("./routes/themoviedb-api.js");
 let app = express();
 
 const port = 3000;
@@ -47,13 +48,10 @@ hbs.registerHelper('log', function(a) {
 
 app.use(express.static(__dirname + "./../public"));
 
-app.use(users);
-
 app.use(index);
-
-
-
+app.use(users);
 app.use(lists);
+app.use(themoviedbAPI);
 
 app.listen(port, () => {
 	console.log(`App starting on localhost:${port}`);
