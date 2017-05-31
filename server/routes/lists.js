@@ -51,9 +51,9 @@ router.delete("/lists/remove/:id", authenticate, (req, res) => {
 
 router.patch("/lists/:id/addmovie", authenticate, (req, res) => {
 	let id = req.params.id;
-	let body = _.pick(req.body, ["movieId"]);
+	let body = _.pick(req.body, ["movieName"]);
 
-	if (!ObjectId.isValid(id) || !ObjectId.isValid(body.movieId)) {
+	if (!ObjectId.isValid(id)) {
 		res.status(404).send();
 	}
 

@@ -15,8 +15,8 @@ let ListSchema = new mongoose.Schema({
 		required: true
 	},
 	movies: [{
-		movieId: {
-			type: Number,
+		movieName: {
+			type: String,
 			required: true
 		}
 	}]

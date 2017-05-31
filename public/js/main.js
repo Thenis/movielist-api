@@ -5,55 +5,17 @@ $(function () {
         showMsg("success", "success");
     });
 
-    // $("#home").click(function () {
-    //     showView("home-page");
-    //     ajaxRegister()
-    // });
-
-    // $("#register").click(function () {
-    //     showView("register-page");
-    // });
-
-    // $("#lists").click(function () {
-    //     showView("lists-page");
-    //     listAllLists();
-    // });
-
-    // $("#add-list").click(function () {
-    //     showView("add-list-form");
-    // });
-
-    // $("#add-movie").click(function () {
-    //     showView("add-movie-form");
-    //     loadListNamesInSelect();
-    // });
-
-    
-
-    
-
     $("#movie-input").on("input", function () {
         let movieName = $(this).val();
         ajaxGetMovies(movieName);
+    });
 
-    })
     $("#log-out").click(ajaxLogoutUser);
+
+    // $("#movie-query-list").click(function() {
+    //     console.log($(this).text())
+    // });
 });
-
-// function ajaxLocalAPI() {
-//     $.ajax({
-//         method: "GET",
-//         url: "http://localhost:3000/lists",
-//         headers: {
-//             "x-auth": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1OTI3MTNlN2I1MzdlMjNkNzA0OGVjM2YiLCJhY2Nlc3MiOiJhdXRoIiwiaWF0IjoxNDk1NzMzMjIzfQ.FOw4-q7dWveUzqsiisFNVtLJ7bRjWwMfiM0A_aZVwYM"
-//         },
-//         dataType: "JSON"
-//     }).then((result) => {
-//         console.log(result)
-//     })
-
-
-// }
 
 function setCookie(name, value, expYear, expMonth, expDay, path, domain, secure) {
     let cookieString = `${name}=${escape(value)}`;
@@ -111,33 +73,6 @@ function ajaxLogoutUser() {
     }).catch((err) => showMsg("Error", "error"));
 }
 
-// function ajaxGetMovies(queryString) {
-//     const apiKey = "87cdafe12d9bdca68ba01c573e34376f";
-
-//     let result = $.ajax({
-//         method: "GET",
-//         url: `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=en-US&query=${queryString}&page=1&include_adult=false`,
-
-//         dataType: "JSON"
-//     }).then(function (movies) {
-//         console.log(movies.results);
-//         $("#movie-query-list").empty();
-
-//         for (let movie of movies.results) {
-//             $("<li>")
-//                 .addClass("list-group-item list-group-item-action")
-//                 .append($("<img>").attr("src", (movie.poster_path === null ? "img/default-movie.png" : `https://image.tmdb.org/t/p/w45_and_h67_bestv2${movie.poster_path}`)))
-//                 .append($("<a>")
-//                     .attr("href", "#")
-//                     .text(movie.original_title)
-//                     .click(function () {
-//                         addMovie($(this).text())
-//                     }))
-//                 .appendTo($("#movie-query-list"));
-//         }
-//     });
-// }
-
 function ajaxGetMovies(queryString) {
     let result = $.ajax({
         method: "POST",
@@ -149,12 +84,12 @@ function ajaxGetMovies(queryString) {
         $("#movie-query-list").empty();
 
         //if array is empty
-        if(movies.results.length === 0) {
+        if (movies.results.length === 0) {
             $("<li>")
                 .addClass("list-group-item list-group-item-action")
                 .text("No movies found")
                 .appendTo($("#movie-query-list"));
-            return;           
+            return;
         }
 
         for (let movie of movies.results) {
@@ -174,7 +109,7 @@ function ajaxGetMovies(queryString) {
 
 function showHideUserLink() {
     $("#navbar li a").show();
-    if(getCookie("x-auth")) {
+    if (getCookie("x-auth")) {
         $("#login").hide();
         $("#register").hide();
         $("#user-nav").text(getCookie("username"))
@@ -236,70 +171,6 @@ let movieListManipulator = (function () {
     };
 })();
 
-function addList() {
-    let listNameInput = $("#list-input").val();
-    let listDescrInput = $("#list-descr").val();
-
-    movieListManipulator.addList({
-        name: listNameInput,
-        description: listDescrInput,
-        movies: {}
-    });
-
-    showMsg("List successfully added!", "success");
-}
-
-function listAllLists() {
-    let target = $("#target-location"); // location of where the lists will be appended
-
-    let listObj = movieListManipulator.getLists();
-
-    if (checkObjIfEmpty(listObj)) {
-        return;
-    }
-
-    target.empty(); // clear child elements
-
-    for (let listKey in listObj) {
-        if (listObj.hasOwnProperty(listKey)) {
-            let gridDiv = $("<div>").addClass("col-sm-6");
-
-            let cardDiv = $("<div>").addClass("card");
-
-            let cardBlockDiv = $("<div>").addClass("card-block center-block");
-
-            let cardTitle = $("<h3>").addClass("card-title text-center");
-
-            let linkElement = $("<a>")
-                .attr("href", "#")
-                .text(listObj[listKey].name);
-
-            let cardListDescription = $("<i>")
-                .text((listObj[listKey].description === "") ? "No Description" : listObj[listKey].description); // checks if the is a description. If there isn't it displays "No description"
-
-            linkElement.click(function () {
-                if (checkObjIfEmpty(listObj[listKey].movies)) {
-                    showMsg("No movies available in selected list.");
-                } else {
-                    listMovies(listKey, listObj[listKey].movies); // lists the movies with listId and movies object
-                }
-            });
-
-            cardTitle.append(linkElement);
-
-            cardBlockDiv.append(cardTitle);
-            cardBlockDiv.append(cardListDescription);
-
-            cardDiv.append(cardBlockDiv);
-
-            gridDiv.append(cardDiv);
-
-            target.append(gridDiv);
-
-        }
-    }
-}
-
 function loadListNamesInSelect() {
     let select = $("#list-select");
 
@@ -330,9 +201,18 @@ function addMovie(movieName) {
         return;
     }
 
-    movieListManipulator.addMovieToList(listId, {
-        name: movieName
-    })
+    let data = {
+        movieName
+    };
+
+    $.ajax({
+        method: "PATCH",
+        url: `/lists/${listId}/addmovie`,
+        data: data ,
+        dataType: "JSON"
+    }).then((response) => {
+        console.log(response);
+    });
 
     showMsg("Movie successfully added!", "success");
 }
