@@ -34,7 +34,7 @@ function ajaxLogoutUser() {
         }
     }).then(function (res) {
         console.log("here");
-        location.reload();
+        window.location="/";
         showMsg("Successfully logged off!", "success");
         showHideUserLink();
     }).catch((err) => showMsg("Error", "error"));
