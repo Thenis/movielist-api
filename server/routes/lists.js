@@ -6,6 +6,21 @@ const _ = require("lodash");
 let { List } = require("./../models/list.js");
 let { authenticate } = require("./../middleware/authenticate.js"); //authentication by user token middleware
 
+router.use( function( req, res, next ) {
+    // this middleware will call for each requested
+    // and we checked for the requested query properties
+    // if _method was existed
+    // then we know, clients need to call DELETE request instead
+    if ( req.query._method == 'DELETE' ) {
+        // change the original METHOD
+        // into DELETE method
+        req.method = 'DELETE';
+        // and set requested url to /user/12
+        req.url = req.path;
+    }       
+    next(); 
+});
+
 // Create new list
 router.post("/lists", authenticate, (req, res) => {
 	let body = _.pick(req.body, ["name", "description"]);
@@ -62,7 +77,11 @@ router.get("/movie-list/:id", authenticate, (req, res) => {
 	}).then((list) => {
 		let listName = list.name
 		let movies = list.movies;
+		movies[0].listId = list._id;
+
 		res.render("view-movies.hbs", { movies, listName });
+	}).catch((err) => {
+		res.render("view-movies.hbs", { err });
 	});
 });
 
@@ -89,9 +108,9 @@ router.patch("/lists/:id/addmovie", authenticate, (req, res) => {
 		}));
 });
 
-router.delete("/lists/:id/deletemovie", authenticate, (req, res) => {
+router.delete("/lists/:id/deletemovie/:movieId", authenticate, (req, res) => {
 	let id = req.params.id;
-	let body = _.pick(req.body, ["movieName"]);
+	let movieId = req.params.movieId;
 
 	if (!ObjectId.isValid(id)) {
 		res.status(404).send();
@@ -103,7 +122,7 @@ router.delete("/lists/:id/deletemovie", authenticate, (req, res) => {
 	}, {
 			$pull: {
 				movies: {
-					_id: body.movieName
+					_id: movieId
 				}
 			}
 		}).then((list) => {

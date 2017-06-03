@@ -38,10 +38,6 @@ app.use(cors(corsOptions));
 hbs.registerPartials(__dirname + "./../views/partials");
 app.set("view engine", "hbs");
 
-
-
-
-
 hbs.registerHelper('log', function(a) {
     console.log(a);
 });
