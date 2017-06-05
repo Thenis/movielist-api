@@ -77,9 +77,9 @@ router.get("/movie-list/:id", authenticate, (req, res) => {
 	}).then((list) => {
 		let listName = list.name
 		let movies = list.movies;
-		movies[0].listId = list._id;
+		let listId = list._id;
 
-		res.render("view-movies.hbs", { movies, listName });
+		res.render("view-movies.hbs", { movies, listName, listId });
 	}).catch((err) => {
 		res.render("view-movies.hbs", { err });
 	});
@@ -126,7 +126,7 @@ router.delete("/lists/:id/deletemovie/:movieId", authenticate, (req, res) => {
 				}
 			}
 		}).then((list) => {
-			res.send(list)
+			res.send()
 		}).catch((err) => res.send(404).send());
 });
 
