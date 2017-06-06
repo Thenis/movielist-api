@@ -33,9 +33,7 @@ function ajaxLogoutUser() {
             "x-auth": getCookie("x-auth")
         }
     }).then(function (res) {
-        console.log("here");
         window.location="/";
-        showMsg("Successfully logged off!", "success");
         showHideUserLink();
     }).catch((err) => showMsg("Error", "error"));
 }

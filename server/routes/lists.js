@@ -11,10 +11,10 @@ router.use( function( req, res, next ) {
     // and we checked for the requested query properties
     // if _method was existed
     // then we know, clients need to call DELETE request instead
-    if ( req.query._method == 'DELETE' ) {
+    if ( req.query._method == 'PATCH' ) {
         // change the original METHOD
         // into DELETE method
-        req.method = 'DELETE';
+        req.method = 'PATCH';
         // and set requested url to /user/12
         req.url = req.path;
     }       
@@ -108,7 +108,7 @@ router.patch("/lists/:id/addmovie", authenticate, (req, res) => {
 		}));
 });
 
-router.delete("/lists/:id/deletemovie/:movieId", authenticate, (req, res) => {
+router.patch("/lists/:id/deletemovie/:movieId", authenticate, (req, res) => {
 	let id = req.params.id;
 	let movieId = req.params.movieId;
 
@@ -126,7 +126,7 @@ router.delete("/lists/:id/deletemovie/:movieId", authenticate, (req, res) => {
 				}
 			}
 		}).then((list) => {
-			res.send()
+			res.redirect("back");
 		}).catch((err) => res.send(404).send());
 });
 

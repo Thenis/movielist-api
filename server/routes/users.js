@@ -7,6 +7,7 @@ const _ = require("lodash");
 let { User } = require("./../models/user.js");
 let { authenticate } = require("./../middleware/authenticate.js"); //authentication by user token middleware
 
+// Register
 router.post("/users", (req, res) => {
     let body = _.pick(req.body, ["username", "password"]); // get only the username and password from the request body
     //console.log(req)
@@ -26,7 +27,7 @@ router.post("/users", (req, res) => {
 // Login
 router.post("/login", (req, res) => {
     let body = _.pick(req.body, ["username", "password"]);
-    //console.log(req);
+    
     User.findUserAndVerifyLogin(body.username, body.password).then((user) => {
         return user.generateAuthToken().then((token) => {
             res.cookie("x-auth", token).cookie("username", body.username).redirect(301, "/");
