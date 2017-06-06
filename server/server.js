@@ -24,17 +24,8 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
-
-const corsOptions = {
-	origin: "*",
-	methods: "GET, HEAD, PUT, PATCH, POST, DELETE",
-	preflightContinue: false,
-	optionsSuccessStatus: 204,
-	exposedHeaders: ["x-auth"]
-}
-
 //Allows cross-origin resource sharing
-app.use(cors(corsOptions));
+app.use(cors());
 hbs.registerPartials(__dirname + "./../views/partials");
 app.set("view engine", "hbs");
 
